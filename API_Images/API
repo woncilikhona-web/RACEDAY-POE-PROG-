@@ -1,86 +1,9 @@
-# RaceDay API Endpoint Plan
+### API Endpoint Plan
 
-## 1. Introduction
+The RaceDay system will use a RESTful Web API to enable communication between the application and the database. The API will provide endpoints for user authentication, profile management, event management, categories, participant enrolments, results, routes and weather information. HTTP methods such as GET, POST, PUT and DELETE will be used to retrieve, create, update and remove system information. Access to specific endpoints will be controlled according to the user's role. For example, organisers will be responsible for managing events, categories, results, routes and weather information, while participants will be able to register for events and manage their enrolments.
 
-The RaceDay system will use a RESTful Web API to facilitate communication between the application and the database. The API provides endpoints for user authentication, profile management, event management, categories, participant enrolments, results, routes and weather information. HTTP methods are used according to the purpose of each operation, while role-based access is applied to protect functions that require organiser or participant privileges.
+The authentication functionality will allow users to register and log into the RaceDay system using their personal credentials. Once authenticated, users will be able to access and update their profile information. The event endpoints will allow users to view available events, while authorised organisers will be able to create, update and delete events. Categories will be linked to specific events and will contain information such as the race distance, entry fee and age group.
 
-## 2. Authentication and User Management
+The enrolment endpoints will allow participants to register for specific event categories and view their existing enrolments. Organisers will also be able to view the participants registered for their events. The results endpoints will allow organisers to record and manage participant results, including finish time, chip time, position and pace. Authenticated users will be able to retrieve relevant results. Additional endpoints will provide access to route and weather information associated with events, allowing participants to access useful information before and during an event.
 
-| HTTP Method | Route                | Description                                                            | Role Required      | Request Body                                            | Expected Response |
-| ----------- | -------------------- | ---------------------------------------------------------------------- | ------------------ | ------------------------------------------------------- | ----------------- |
-| POST        | `/api/auth/register` | Registers a new user on the RaceDay system.                            | Public             | FirstName, LastName, Email, Password, Role, PhoneNumber | 201 Created       |
-| POST        | `/api/auth/login`    | Authenticates an existing user.                                        | Public             | Email, Password                                         | 200 OK            |
-| GET         | `/api/users/profile` | Retrieves the profile information of the currently authenticated user. | Authenticated User | None                                                    | 200 OK            |
-| PUT         | `/api/users/profile` | Updates the profile information of the authenticated user.             | Authenticated User | FirstName, LastName, PhoneNumber                        | 200 OK            |
-
-## 3. Event Management
-
-| HTTP Method | Route              | Description                                 | Role Required | Request Body                                                              | Expected Response |
-| ----------- | ------------------ | ------------------------------------------- | ------------- | ------------------------------------------------------------------------- | ----------------- |
-| GET         | `/api/events`      | Retrieves all available events.             | Public        | None                                                                      | 200 OK            |
-| GET         | `/api/events/{id}` | Retrieves information for a specific event. | Public        | None                                                                      | 200 OK            |
-| POST        | `/api/events`      | Creates a new sporting event.               | Organiser     | EventName, Description, EventDate, Location, RegistrationDeadline, Status | 201 Created       |
-| PUT         | `/api/events/{id}` | Updates an existing event.                  | Organiser     | EventName, Description, EventDate, Location, RegistrationDeadline, Status | 200 OK            |
-| DELETE      | `/api/events/{id}` | Removes an existing event.                  | Organiser     | None                                                                      | 204 No Content    |
-
-## 4. Category Management
-
-| HTTP Method | Route                         | Description                                                | Role Required | Request Body                                                       | Expected Response |
-| ----------- | ----------------------------- | ---------------------------------------------------------- | ------------- | ------------------------------------------------------------------ | ----------------- |
-| GET         | `/api/events/{id}/categories` | Retrieves all categories associated with a specific event. | Public        | None                                                               | 200 OK            |
-| GET         | `/api/categories/{id}`        | Retrieves information about a specific category.           | Public        | None                                                               | 200 OK            |
-| POST        | `/api/categories`             | Creates a new category for an event.                       | Organiser     | EventID, CategoryName, DistanceKM, EntryFee, AgeGroup, Description | 201 Created       |
-| PUT         | `/api/categories/{id}`        | Updates an existing event category.                        | Organiser     | CategoryName, DistanceKM, EntryFee, AgeGroup, Description          | 200 OK            |
-| DELETE      | `/api/categories/{id}`        | Deletes an existing category.                              | Organiser     | None                                                               | 204 No Content    |
-
-## 5. Participant Enrolments
-
-| HTTP Method | Route                         | Description                                                             | Role Required         | Request Body                       | Expected Response |
-| ----------- | ----------------------------- | ----------------------------------------------------------------------- | --------------------- | ---------------------------------- | ----------------- |
-| POST        | `/api/enrolments`             | Registers a participant for an event category.                          | Participant           | EventID, CategoryID                | 201 Created       |
-| GET         | `/api/enrolments`             | Retrieves the enrolments associated with the authenticated participant. | Participant           | None                               | 200 OK            |
-| GET         | `/api/enrolments/{id}`        | Retrieves information about a specific enrolment.                       | Participant/Organiser | None                               | 200 OK            |
-| PUT         | `/api/enrolments/{id}`        | Updates an existing enrolment.                                          | Participant/Organiser | EventID, CategoryID, PaymentStatus | 200 OK            |
-| DELETE      | `/api/enrolments/{id}`        | Cancels an existing enrolment.                                          | Participant/Organiser | None                               | 204 No Content    |
-| GET         | `/api/events/{id}/enrolments` | Retrieves participants enrolled in a specific event.                    | Organiser             | None                               | 200 OK            |
-
-## 6. Results Management
-
-| HTTP Method | Route                      | Description                                             | Role Required      | Request Body                                                                       | Expected Response |
-| ----------- | -------------------------- | ------------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------- | ----------------- |
-| POST        | `/api/results`             | Records the result of a participant after an event.     | Organiser          | EnrolmentID, FinishTime, ChipTime, PositionOverall, PositionCategory, Pace, Status | 201 Created       |
-| GET         | `/api/results`             | Retrieves available participant results.                | Authenticated User | None                                                                               | 200 OK            |
-| GET         | `/api/results/{id}`        | Retrieves a specific participant result.                | Authenticated User | None                                                                               | 200 OK            |
-| PUT         | `/api/results/{id}`        | Updates an existing participant result.                 | Organiser          | EnrolmentID, FinishTime, ChipTime, PositionOverall, PositionCategory, Pace, Status | 200 OK            |
-| DELETE      | `/api/results/{id}`        | Deletes an existing result.                             | Organiser          | None                                                                               | 204 No Content    |
-| GET         | `/api/events/{id}/results` | Retrieves the results associated with a specific event. | Authenticated User | None                                                                               | 200 OK            |
-
-## 7. Route Management
-
-| HTTP Method | Route                     | Description                                        | Role Required | Request Body                                        | Expected Response |
-| ----------- | ------------------------- | -------------------------------------------------- | ------------- | --------------------------------------------------- | ----------------- |
-| GET         | `/api/routes`             | Retrieves available event routes.                  | Public        | None                                                | 200 OK            |
-| GET         | `/api/events/{id}/routes` | Retrieves routes associated with a specific event. | Public        | None                                                | 200 OK            |
-| POST        | `/api/routes`             | Creates a route for an event.                      | Organiser     | EventID, RouteName, DistanceKM, Description, MapURL | 201 Created       |
-| PUT         | `/api/routes/{id}`        | Updates an existing event route.                   | Organiser     | RouteName, DistanceKM, Description, MapURL          | 200 OK            |
-| DELETE      | `/api/routes/{id}`        | Deletes an existing event route.                   | Organiser     | None                                                | 204 No Content    |
-
-## 8. Weather Management
-
-| HTTP Method | Route                      | Description                                                     | Role Required | Request Body                                                            | Expected Response |
-| ----------- | -------------------------- | --------------------------------------------------------------- | ------------- | ----------------------------------------------------------------------- | ----------------- |
-| GET         | `/api/weather`             | Retrieves available weather records.                            | Public        | None                                                                    | 200 OK            |
-| GET         | `/api/events/{id}/weather` | Retrieves weather information associated with a specific event. | Public        | None                                                                    | 200 OK            |
-| POST        | `/api/weather`             | Adds a weather record for an event.                             | Organiser     | EventID, RecordedAt, Temperature, Humidity, WindSpeed, WeatherCondition | 201 Created       |
-| PUT         | `/api/weather/{id}`        | Updates an existing weather record.                             | Organiser     | EventID, RecordedAt, Temperature, Humidity, WindSpeed, WeatherCondition | 200 OK            |
-| DELETE      | `/api/weather/{id}`        | Deletes an existing weather record.                             | Organiser     | None                                                                    | 204 No Content    |
-
-## 9. API Security and Access Control
-
-The RaceDay API applies role-based access control to ensure that users can only perform operations appropriate to their responsibilities. Public endpoints allow users to register, authenticate and view publicly available event information. Participants are provided with functionality relating to their enrolments, while organisers are given additional permissions to create and manage events, categories, results, routes and weather information.
-
-This approach improves the security and integrity of the system by preventing unauthorised users from performing administrative operations. Authentication is required for protected resources, while the user's assigned role determines which operations can be performed.
-
-## 10. Conclusion
-
-The API Endpoint Plan provides a structured specification for communication between the RaceDay application and its backend services. The endpoints correspond with the entities and functionality identified in the system design and database structure. The use of RESTful HTTP methods, defined request bodies, expected responses and role-based access provides a clear foundation for implementing the RaceDay Web API.
+Each API endpoint will define the required HTTP method, route, purpose, user role, request information and expected response. This provides a clear structure for implementing the RaceDay API and ensures that the API corresponds with the entities and relationships identified in the database design. Role-based access also helps protect sensitive operations by ensuring that only authorised users can perform administrative functions.
