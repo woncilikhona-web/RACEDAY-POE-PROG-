@@ -31,3 +31,7 @@ Weather information
 Role-based access
 Structured database management
 API-based communication
+
+
+3. System Objectives
+4. 
