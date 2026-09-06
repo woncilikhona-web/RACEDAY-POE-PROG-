@@ -35,3 +35,130 @@ API-based communication
 
 3. System Objectives
 4. 
+7. Database Entities
+RaceDayUsers
+
+The RaceDayUsers table stores information about users registered on the system.
+
+Important attributes include:
+
+UserID
+FirstName
+LastName
+Email
+PasswordHash
+Role
+PhoneNumber
+CreatedAt
+
+UserID is the primary key.
+
+Events
+
+The Events table stores information about sporting events.
+
+Important attributes include:
+
+EventID
+OrganiserID
+EventName
+Description
+EventDate
+Location
+RegistrationDeadline
+Status
+CreatedAt
+
+EventID is the primary key.
+
+OrganiserID is a foreign key referencing RaceDayUsers.
+
+Categories
+
+The Categories table stores categories belonging to events.
+
+Important attributes include:
+
+CategoryID
+EventID
+CategoryName
+DistanceKM
+EntryFee
+AgeGroup
+Description
+
+CategoryID is the primary key.
+
+EventID is a foreign key referencing Events.
+
+Enrolments
+
+The Enrolments table stores participant registrations.
+
+Important attributes include:
+
+EnrolmentID
+EventID
+CategoryID
+ParticipantID
+EnrolmentDate
+RaceNumber
+PaymentStatus
+
+EnrolmentID is the primary key.
+
+EventID, CategoryID and ParticipantID are foreign keys.
+
+Results
+
+The Results table stores participant race results.
+
+Important attributes include:
+
+ResultID
+EnrolmentID
+FinishTime
+ChipTime
+PositionOverall
+PositionCategory
+Pace
+Status
+
+ResultID is the primary key.
+
+EnrolmentID is a foreign key referencing Enrolments.
+
+Routes
+
+The Routes table stores route information for events.
+
+Important attributes include:
+
+RouteID
+EventID
+RouteName
+DistanceKM
+Description
+MapURL
+
+RouteID is the primary key.
+
+EventID is a foreign key referencing Events.
+
+Weather
+
+The Weather table stores weather information associated with events.
+
+Important attributes include:
+
+WeatherID
+EventID
+RecordedAt
+Temperature
+Humidity
+WindSpeed
+WeatherCondition
+
+WeatherID is the primary key.
+
+EventID is a foreign key referencing Events.
