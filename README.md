@@ -1,164 +1,164 @@
-# RACEDAY-POE-PROG-
+# RaceDay – Event Management System
+
+## Project Overview
+
+RaceDay is an event management system designed for the South African running, walking and cycling community. The system allows organisers to create and manage sporting events, categories, routes, participants and race results.
+
+Participants can browse available events, view categories, enrol in events and access their race results. The system also provides route and weather information to assist participants when preparing for events.
+
+This project forms part of the **PROG6212 Programming 2B Portfolio of Evidence (PoE) – Part 1**.
+
+---
+
+## System Features
+
+The main features of RaceDay include:
+
+* User registration and authentication
+* Organiser and participant roles
+* Event creation and management
+* Event category management
+* Participant enrolments
+* Race result management
+* Event route information
+* Weather information
+* Relational database management
+* API-based system communication
+
+---
+
+## Database
+
+RaceDay uses **Microsoft SQL Server** as its database management system.
+
+The database consists of seven main entities:
+
+* `RaceDayUsers`
+* `Events`
+* `Categories`
+* `Enrolments`
+* `Results`
+* `Routes`
+* `Weather`
+
+Primary keys and foreign keys are used to maintain relationships between the entities. The `Enrolments` table acts as an associative entity between participants and events.
+
+The SQL script is located in:
+
+```text
+SQL_Queries/01_Create_RaceDay_Database.sql
+```
+
+---
+
+## API
+
+The RaceDay API provides endpoints for:
+
+* Authentication
+* User profiles
+* Events
+* Categories
+* Enrolments
+* Results
+* Routes
+* Weather
+
+The API uses standard HTTP methods such as `GET`, `POST`, `PUT` and `DELETE`.
+
+The API Endpoint Plan is located in:
+
+```text
+API/API_Endpoint_Plan.md
+```
+
+---
+
+## ERD
+
+The Entity Relationship Diagram represents the database structure and shows the relationships between the RaceDay entities.
+
+The main relationships include:
+
+```text
+RaceDayUsers → Events
+RaceDayUsers → Enrolments
+Events → Categories
+Events → Enrolments
+Categories → Enrolments
+Enrolments → Results
+Events → Routes
+Events → Weather
+```
+
+The ERD is located in:
+
+```text
+ERD/RaceDay_ERD.png
+```
+
+---
+
+## User Roles
+
+### Organiser
+
+Organisers can create and manage events, categories, routes, weather information and race results.
+
+### Participant
+
+Participants can browse events, enrol in categories, manage their profiles and view their race results.
+
+---
+
+## Technologies Used
+
+* C#
+* ASP.NET Core
+* Microsoft SQL Server
+* Entity Framework Core
+* Visual Studio
+* Git
+* GitHub
+* GitHub Actions
+
+---
+
+## Project Structure
+
+```text
+RaceDay_PoE_Part1
+│
+├── ERD
+│   └── RaceDay_ERD.png
+│
+├── API
+│   └── API_Endpoint_Plan.md
+│
+├── SQL_Queries
+│   └── 01_Create_RaceDay_Database.sql
+│
+├── Screenshots
+│   └── Database screenshots
+│
+└── README.md
+```
+
+---
+
+## Testing
+
+The SQL database was tested by creating the required tables, inserting sample data and executing SELECT and JOIN queries.
+
+Testing verifies that the database tables and relationships are functioning correctly.
+
+---
 
 
-RaceDay – Event Management System
-1. Project Overview
 
-RaceDay is an event management system designed for the South African road running, walking and cycling community. The purpose of the system is to provide a centralised platform for managing sporting events and the participants who take part in them.
+---
 
-The system allows event organisers to create and manage sporting events, define event categories, provide route information, manage participant enrolments and record race results. Participants can use the system to browse available events, view categories, enrol in events and access their race results.
+## Conclusion
 
-RaceDay also includes route and weather information to provide participants with additional information that can assist them when preparing for an event.
+RaceDay Part 1 establishes the foundation for the development of the event management system. The ERD defines the database structure, the API Endpoint Plan describes the planned system functionality, and the SQL implementation provides the required database tables, relationships and sample data.
 
-This project forms part of the PROG6212 Programming 2B Portfolio of Evidence (PoE).
-
-
-2. Project Purpose
-
-The purpose of RaceDay is to improve the organisation and management of road running, walking and cycling events through a structured digital system.
-
-Traditional event management can involve multiple separate processes for event registration, participant information, race categories, results and event information. RaceDay aims to bring these processes together into a single system.
-
-The system is designed to provide:
-
-Centralised event information
-Participant registration
-Event category management
-Participant enrolment management
-Race result management
-Route information
-Weather information
-Role-based access
-Structured database management
-API-based communication
-
-
-3. System Objectives
-4. 
-7. Database Entities
-RaceDayUsers
-
-The RaceDayUsers table stores information about users registered on the system.
-
-Important attributes include:
-
-UserID
-FirstName
-LastName
-Email
-PasswordHash
-Role
-PhoneNumber
-CreatedAt
-
-UserID is the primary key.
-
-Events
-
-The Events table stores information about sporting events.
-
-Important attributes include:
-
-EventID
-OrganiserID
-EventName
-Description
-EventDate
-Location
-RegistrationDeadline
-Status
-CreatedAt
-
-EventID is the primary key.
-
-OrganiserID is a foreign key referencing RaceDayUsers.
-
-Categories
-
-The Categories table stores categories belonging to events.
-
-Important attributes include:
-
-CategoryID
-EventID
-CategoryName
-DistanceKM
-EntryFee
-AgeGroup
-Description
-
-CategoryID is the primary key.
-
-EventID is a foreign key referencing Events.
-
-Enrolments
-
-The Enrolments table stores participant registrations.
-
-Important attributes include:
-
-EnrolmentID
-EventID
-CategoryID
-ParticipantID
-EnrolmentDate
-RaceNumber
-PaymentStatus
-
-EnrolmentID is the primary key.
-
-EventID, CategoryID and ParticipantID are foreign keys.
-
-Results
-
-The Results table stores participant race results.
-
-Important attributes include:
-
-ResultID
-EnrolmentID
-FinishTime
-ChipTime
-PositionOverall
-PositionCategory
-Pace
-Status
-
-ResultID is the primary key.
-
-EnrolmentID is a foreign key referencing Enrolments.
-
-Routes
-
-The Routes table stores route information for events.
-
-Important attributes include:
-
-RouteID
-EventID
-RouteName
-DistanceKM
-Description
-MapURL
-
-RouteID is the primary key.
-
-EventID is a foreign key referencing Events.
-
-Weather
-
-The Weather table stores weather information associated with events.
-
-Important attributes include:
-
-WeatherID
-EventID
-RecordedAt
-Temperature
-Humidity
-WindSpeed
-WeatherCondition
-
-WeatherID is the primary key.
-
-EventID is a foreign key referencing Events.
